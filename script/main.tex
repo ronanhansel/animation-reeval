@@ -4,7 +4,7 @@
 \PassOptionsToPackage{hyphens}{url}
 \usepackage{hyperref}
 \usepackage{setspace}
-\usepackage[final]{microtype}
+\usepackage[final,nopatch=footnote]{microtype}
 \hypersetup{
   colorlinks=false,
   pdfborder={0 0 1},
@@ -50,9 +50,7 @@ X = T + e
 The True Score ($T$) is a hypothetical concept. It represents the average score an 
 individual would achieve if they were to take the test an infinite number of times,
  with the random errors cancelling each other out. We can never directly observe the
-  true score; we can only estimate it from the observed score. 
-
-The Error ($e$) component represents all of the random, unsystematic factors that cause an observed score to deviate from the true score. These factors can include a test-taker's mood, fatigue, luck in guessing, or minor variations in the testing environment.
+  true score; we can only estimate it from the observed score. The Error ($e$) component represents all of the random, unsystematic factors that cause an observed score to deviate from the true score. These factors can include a test-taker's mood, fatigue, luck in guessing, or minor variations in the testing environment.
 
 Despite its influence and intuitive appeal, CTT has significant limitations. Its most critical shortcoming is that its statistics are sample-dependent. An item's difficulty (the proportion of people who get it right) and a test's overall reliability are intrinsically tied to the specific group of people who took that particular test. This makes it difficult to compare scores from different test forms or to compare the ability of students who took different tests. 
 
@@ -60,7 +58,8 @@ Furthermore, CTT treats the test as a single, monolithic entity, focusing almost
 
 \subsection*{IRT}
 
-The item response theory (IRT) $P_{ij}\left(\theta_j,\ b_i,\ a_i,\ c_i\right)$ models the relationship between a person's underlying ability, other traits, and their probability of answering a single item correctly. This enables researchers to better understand the behaviour of the test-taker and the interaction between the test, which will be important later on to create an adaptive test model.
+The item response theory (IRT) $P_{ij}\left(\theta_j,\ b_i,\ a_i,\ c_i\right)$ models the relationship between a person's underlying ability, other traits, and their probability of answering a single item correctly. This enables researchers to better understand the behaviour of the test-taker and the interaction
+with the test, which will be important later on to create an adaptive test model.
 
 Now, to visualise the IRT model, we use something called the Item Characteristic Curve (ICC, for short). This sigmoid-shaped curve is derived from the model and represents the probability of choosing a correct item with respect to the ability. 
 
@@ -92,11 +91,11 @@ Okay, it might be a bit disconnected at first to see those formulae, but let’s
 p\left(Y_{i,j}|b_i\right)=\frac{\exp(\theta_j-b_i)}{1+\exp(\theta_j-b_i)}=\sigma(\theta_j-b_i)
 \]
 
-I have changed the symbols a bit, but they mean the same thing, with $Y$ as the response matrix of either True or False. If we have the probability of answering a question correctly, and the question’s difficulty, we can approximate the test-taker’s ability by substitution.
+I have changed the symbols a bit, but they mean the same thing, with $Y_{i,j}$ as the response matrix of either True or False. If we have the probability of answering a question correctly, and the question’s difficulty, we can approximate the test-taker’s ability by substitution.
 
-There are many ways to solve this equation statistically for ability, but today I will use Machine Learning to estimate both the difficulty and ability. What you will need is a fixed number of random test-takers. To make sure that it is representative of the general population, you have to make sure that they are randomly selected. We will also need a question bank and encode it with the corresponding True / False from collected responses. We are performing this experiment on dichotomic tests, or those that only have the answers as either True or False.
+There are many ways to solve this equation statistically for ability, but for now, I will use Machine Learning to estimate both the difficulty and ability. What you will need is a subset of test-takers from which we can approximate the difficulty. To make sure that it is representative of the general population, they need to be randomly selected. We will also need a question bank and encode it with the corresponding True / False from collected responses. We are performing this experiment on dichotomic tests, or those that only have the answers as either True or False.
 
-Our goal is to use the unknown innate ability from test-takers and their probability of answering a given question correctly to estimate the difficulty. But how do you use something that is unknown? Well, we know its assumed distribution, that is, standard normal. It is reasonable to assume that the test-takers' abilities, albeit unknown, follow a standard normal distribution. The majority of the population is mediocre, while only a small fraction of test-takers exhibit the extremely high or low abilities found in the tails of the distribution. We can just generate them randomly following such distribution to find out the difficulty and average out by the number of random samples to get the result.
+Our goal is to use the unknown innate ability from test-takers and their probability of answering a given question correctly to estimate the difficulty. But how do you use something that is unknown? Well, we know its assumed distribution, that is, standard normal. It is reasonable to assume that the test-takers' abilities, albeit unknown, follow such distribution. The majority of the population is mediocre, while only a small fraction of test-takers exhibit the extremely high or low abilities found in the tails of the distribution. We can just generate them randomly following such distribution to find out the difficulty and average out by the number of random samples to get the result.
 
 This is called a Monte Carlo approximation, a powerful tool to use randomness to solve a problem. Here, we used the assumed distribution to generate reasonable samples. Now, we just need to put this through a learning algorithm.
 
@@ -122,27 +121,25 @@ We can now use this loss function to estimate the difficulty of the questions. F
 
 Through calibrating the questions' difficulty, along with estimating individuals' abilities, we have laid the groundwork for creating an adaptive test. Now, our goal is to deliver only the questions that will yield the most information about the test-taker's ability.
 
-A question is most informative when its difficulty level is close to the test-taker's ability level. Asking a very easy question to a highly capable individual tells you very little, as does asking an impossibly hard question to a weak individual. This will ensure that only the most optimal questions are asked, reducing time, cost, experience and increasing the accuracy of the test.
+A question is most informative when its difficulty level is close to the test-taker's ability level. Asking a very easy question to a highly capable individual tells you very little, as does asking an impossibly hard question to a weak individual. This will ensure that only the most optimal questions are asked, reducing time, cost and increasing the accuracy of the test.
 
-We can employ the Maximum Fisher Information (MFI) strategy to select the most informative question. This strategy selects a question that the model has roughly a 50\% chance of answering correctly, as this is where the most uncertainty is resolved.
-
-Revisiting the 1-PL model, the predictive probability that the current test taker answers item $j$ correctly is
+Revisiting the 1-PL model, the predictive probability that the current test-taker answers item $j$ correctly is this:
 \[
 p_j \equiv p\big(Y_{\text{new},j}=1\mid \theta^{t}_{\text{new}},\ \hat z_j\big)
 = \sigma\big(\theta^{t}_{\text{new}} - \hat b_j\big),
 \]
-where $\hat z_j$ denotes the current estimates for the item parameters and $\hat b_j$ is
-the item difficulty.
 
-The Fisher information of item $j$ for a Bernoulli response under the Rasch model is
+where $\hat z_j$ denotes the current estimates for the item parameters and $\hat b_j$ is the item difficulty. The Fisher information of item $j$ for a Bernoulli response under the Rasch model is this:
 \[
 \mathcal I\!\left(\theta^{t}_{\text{new}};\ \hat z_j\right)
 = p_j\,(1-p_j).
 \tag{1}
 \]
 
-MFI chooses the next item by maximizing this information at the current ability estimate
-and then removes it from the remaining pool $Q^t$:
+We can employ the Maximum Fisher Information (MFI) strategy to select the most informative question. This strategy selects a question that the test-taker has roughly a 50\% chance of answering correctly, as this is where the most uncertainty is resolved.
+
+Intuitively, this means we get the most information about a person's ability when their chance of getting an item correct is most uncertain. MFI chooses the next item by maximizing this information at the current ability estimate and then removes it from the remaining pool of questions $Q^t$:
+
 \[
 \hat z^{\,*t}_j,\ q^{*t}_j
 = \underset{\hat z_j:\ q_j\in Q^t}{\arg\max}\ \mathcal I\!\left(\theta^{t}_{\text{new}};\ \hat z_j\right),
