@@ -19,16 +19,11 @@
 \begin{document}
 \section*{How to create an Adaptive Test}
 
-Writing an exam is not a straight-forward task. It involves more than just 
-cramming as many challenging questions as possible. The point of having an exam, 
-after all, is to evaluate and discriminate against a population of test-takers. 
-You need a way to know who is performing well in a given criterion and later, 
-group them for psychometric needs. 
+This is my SAT exam.
 
-There’s a slight problem to this end—making a fair exam is hard. It is pretty 
-difficult to create an evaluation for a large number of people. You need to 
-ensure that the scores, however they might become, will reflect a person’s 
-objective capability.
+Writing an exam is not a straight-forward task. It involves more than just cramming as many challenging questions as possible. The point of having an exam, after all, is to evaluate and discriminate against a population of test-takers. You need a way to know who is performing well in a given criterion and later, group them for psychometric needs.
+
+There's a slight problem to this end—making a fair exam is hard. It is pretty difficult to create an evaluation for a large number of people. You need to ensure that the scores, however they might become, will reflect a person's objective capability.
 
 For a test to be meaningful, it must possess two qualities: Reliability and 
 Validity. Reliability is consistency across time, across items, and across 
@@ -37,29 +32,19 @@ the variable they are intended to.\footnote{Price, P. C., Jhangiani, R., \& Chia
 
 \subsection*{CTT}
 
-To build a test like this, psychometricians usually rely on well-established 
-theoretical frameworks. In the past, we relied on Classical Test Theory, or CTT 
-for short. It postulates that every score a person obtains on a test, the 
-Observed Score ($X$), is a composite of two components: their True Score ($T$) 
-and a component of random Error ($e$). 
+To build a test like this, psychometricians usually rely on well-established theoretical frameworks. In the past, we relied on Classical Test Theory, or CTT for short.
 
 \[
 X = T + e
 \]
 
-The True Score ($T$) is a hypothetical concept. It represents the average score an 
-individual would achieve if they were to take the test an infinite number of times,
- with the random errors cancelling each other out. We can never directly observe the
-  true score; we can only estimate it from the observed score. The Error ($e$) component represents all of the random, unsystematic factors that cause an observed score to deviate from the true score. These factors can include a test-taker's mood, fatigue, luck in guessing, or minor variations in the testing environment.
-
-Despite its influence and intuitive appeal, CTT has significant limitations. Its most critical shortcoming is that its statistics are sample-dependent. An item's difficulty (the proportion of people who get it right) and a test's overall reliability are intrinsically tied to the specific group of people who took that particular test. This makes it difficult to compare scores from different test forms or to compare the ability of students who took different tests. 
+It postulates that every score a person obtains on a test, the Observed Score ($X$), is a composite of two components: A component of random Error ($e$) and True Score ($T$) which represents the average score an individual would achieve if they were to take the test an infinite number of times, with the random errors cancelling each other out.
 
 Furthermore, CTT treats the test as a single, monolithic entity, focusing almost exclusively on the total score. It provides little information about how individuals perform on specific items, and it cannot easily separate the characteristics of the test-taker from the characteristics of the test itself. These limitations paved the way for a more sophisticated model—Item Response Theory.
 
 \subsection*{IRT}
 
-The item response theory (IRT) $P_{ij}\left(\theta_j,\ b_i,\ a_i,\ c_i\right)$ models the relationship between a person's underlying ability, other traits, and their probability of answering a single item correctly. This enables researchers to better understand the behaviour of the test-taker and the interaction
-with the test, which will be important later on to create an adaptive test model.
+The item response theory (IRT) $P_{ij}\left(\theta_j,\ b_i,\ a_i,\ c_i\right)$ models the relationship between a person's underlying ability, other traits, and their probability of answering a single item correctly. This enables researchers to better understand the behaviour of the test-taker and the interaction with the test, which will be important later on to create an adaptive test model.
 
 Now, to visualise the IRT model, we use something called the Item Characteristic Curve (ICC, for short). This sigmoid-shaped curve is derived from the model and represents the probability of choosing a correct item with respect to the ability. 
 
@@ -85,7 +70,7 @@ The 3-PL adds another Item Guessing parameter. It is demonstrated by the asympto
 
 \subsection*{Difficulty calibration}
 
-Okay, it might be a bit disconnected at first to see those formulae, but let’s show how it helps us in measuring test-takers’ ability. For the sake of demonstration, we only use the 1-PL IRT model (empirically, it is powerful enough to estimate a test-taker’s ability with a smaller sample size). This is the sigmoid function of the ability subtracted by difficulty, which converts the subtraction from negative infinity to positive infinity to the range of 0 to 1.
+Okay, it might be a bit disconnected at first to see those formulae, but let’s show how it helps us in measuring test-takers’ ability. For the sake of demonstration, we only use the 1-PL IRT model (empirically, it is powerful enough to estimate a test-taker’s ability with a smaller sample size). This is the sigmoid function of the ability subtracted by difficulty, which squashes the numbers to the range of 0 to 1.
 
 \[
 p\left(Y_{i,j}|b_i\right)=\frac{\exp(\theta_j-b_i)}{1+\exp(\theta_j-b_i)}=\sigma(\theta_j-b_i)
