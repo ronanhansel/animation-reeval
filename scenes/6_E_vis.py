@@ -77,6 +77,36 @@ class Scene1(Scene):
         )
         self.wait(1)
         
+        # Add dimmer background population (fades in behind selected test-takers)
+        background_population_circles = VGroup()
+        np.random.seed(7)
+        num_background = 60
+        for _ in range(num_background):
+            x = np.random.uniform(-6.2, -2.6)
+            y = np.random.uniform(-1.0, 2.4)
+            bg_circle = Circle(
+                radius=0.16,
+                color=GREY,
+                fill_opacity=0.15,
+                stroke_color=DARK_GREY,
+                stroke_width=1,
+            )
+            bg_circle.set_opacity(0)
+            bg_circle.set_z_index(-1)
+            bg_circle.move_to([x, y, 0])
+            background_population_circles.add(bg_circle)
+        self.add(background_population_circles)
+        self.play(
+            LaggedStart(
+                *[c.animate.set_opacity(0.15) for c in background_population_circles],
+                lag_ratio=0.02
+            ),
+            run_time=1.5
+        )
+        self.wait(1)
+        self.play(FadeOut(background_population_circles))
+        self.wait(2)
+        
         # === Fade Out for Simulation ===
         self.play(
             *[circle.animate.set_opacity(0.1) for circle in test_taker_circles],
@@ -131,7 +161,7 @@ class Scene1(Scene):
         matrix_label = Text(
             "Response Matrix",
             color=WHITE,
-            font_size=16
+            font_size=24
         ).next_to(matrix_group, DOWN, buff=0.5)
         
         # Animate questions and matrix appearing
@@ -272,7 +302,7 @@ class Scene2(Scene):
         matrix_label = Text(
             "Response Matrix",
             color=WHITE,
-            font_size=16
+            font_size=24
         ).next_to(matrix_group, DOWN, buff=0.5)
         
         # Add everything to scene

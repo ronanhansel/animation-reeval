@@ -112,7 +112,7 @@ class Scene2(Scene):
         # 2-PL formula (from PL_forms) and title
         title_1pl = Title("1-PL Model")
         pl_1_formula = MathTex(
-            r"P_{ij}\left(\theta_j,b_i,a_i\right)=\frac{\exp\left[a_i(\theta_j-b_i)\right]}{1+\exp\left[a_i(\theta_j-b_i)\right]}"
+            r"P_{ij}\left(\theta_j,b_i\right)=\frac{\exp(\theta_j-b_i)}{1+\exp(\theta_j-b_i)}"
         )
 
         self.play(Write(title_1pl), Write(pl_1_formula))
