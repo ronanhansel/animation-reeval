@@ -17,6 +17,9 @@
 % Slightly increase line height globally
 \setstretch{1.15}
 \begin{document}
+\section*{Introduction}
+Here are my SAT exams. I have taken it 15 times (practice test). I only took the official SAT once, and as you can see, it is pretty close to the practice results. This is the same if I had taken the official SAT 15 times before. But the thing is look at the latter results. They are very much similar to what I actually got one week later. This is one of the most important aspect of a valid exam. You need your scores to reflect your ability regardless of when you take it. But to have such stability, there's some Maths to it.
+
 \section*{How to create an Adaptive Test}
 
 Writing an exam is not a straight-forward task. It involves more than just cramming as many challenging questions as possible. The point of having an exam, after all, is to evaluate and discriminate against a population of test-takers. You need a way to know who is performing well in a given criterion and later, group them for psychometric needs.
@@ -27,6 +30,8 @@ For a test to be meaningful, it must possess two qualities: Reliability and
 Validity. Reliability is consistency across time, across items, and across 
 researchers. Validity is the extent to which the scores actually represent 
 the variable they are intended to.\footnote{Price, P. C., Jhangiani, R., \& Chiang, I-Chant A. (2015). \textit{Research Methods in Psychology} (2nd Canadian ed.), Chapter 5: Reliability and Validity of Measurement. BCcampus Open Education.}
+
+In my case, my scores have steadily increased over time in both the English and Maths sections, which shows that I have improved my corresponding skills over time.
 
 \subsection*{CTT}
 
@@ -58,7 +63,7 @@ The 1-PL (or Parameter Logistic) model is the simplest, with only a Difficulty p
 P_{ij}\left(\theta_j,b_i,a_i\right)=\frac{\exp\left[a_i(\theta_j-b_i)\right]}{1+\exp\left[a_i(\theta_j-b_i)\right]}
 \]
 
-The 2-PL adds another Item Discrimination parameter. In the ICC curve, it is demonstrated by the steepness. Here, a small change of ability can result in a greater positive increase in probability. In this case, the question is effectively separating test-takers over a very small change in their ability.
+The 2-PL adds another Item Discrimination parameter. In the ICC curve, it is demonstrated by the steepness. Here, a small change of ability can result in a greater increase in probability. In this case, the question is effectively separating test-takers over a very small change in their ability.
 
 \[
 P(\theta_j,a_i,b_i,c_i)=c_i+(1-c_i)\frac{\exp\left[a_i(\theta_j-b_i)\right]}{1+\exp\left[a_i(\theta_j-b_i)\right]}
@@ -80,7 +85,7 @@ There are many ways to solve this problem statistically, but for now, I will use
 
 Our goal is to use the unknown innate ability from test-takers and their probability of answering a given question correctly to estimate the difficulty. But how do you use something that is unknown? Well, we know its assumed distribution, that is, standard normal. It is reasonable to assume that the test-takers' abilities, albeit unknown, follow such distribution. The majority of the population is mediocre, while only a small fraction of test-takers exhibit the extremely high or low abilities found in the tails of the distribution. We can just generate them randomly following such distribution to find out the difficulty and average out by the number of random samples to get the result.
 
-This is called a Monte Carlo approximation, a powerful tool to use randomness to solve a problem. Here, we used the assumed distribution to generate reasonable samples. Now, we just need to put this through a learning algorithm.
+This is called a Monte Carlo approximation, a powerful tool which uses randomness to solve a non-deterministic problem. Here, we used the assumed distribution to generate reasonable samples. Now, we just need to put this through a learning algorithm.
 
 The objective function of this process is to maximise the probability of observing the actual data we have. In other words, we want to find the model parameters (like the question's difficulty) that make the real-world outcomes seem as likely as possible. We average them out to complete the Monte Carlo approximation and put the negative sign in front to turn it into a loss function.
 
@@ -143,5 +148,9 @@ This cycle of (i) pick by (2), (ii) observe, (iii) update by (3) repeats until a
 rule is met (e.g., target standard error, max items, or budget).\footnote{See, e.g.,
 Baker (2001) and van der Linden et al. (2000) for background on item selection and Fisher
 information in adaptive testing.}
+
+\section*{Conclusion}
+
+This is just a very simple adative test implementation. Psychometricians will use more sophisticated models and algorithms to create a more accurate and reliable test. But it goes to show that the only way you can improve your score is to improve your skills and your objective ability. There's no way around it.
 
 \end{document}
