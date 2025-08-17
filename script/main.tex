@@ -17,9 +17,6 @@
 % Slightly increase line height globally
 \setstretch{1.15}
 \begin{document}
-\section*{Introduction}
-Here are my SAT exams. I have taken it 15 times (practice test). I only took the official SAT once, and as you can see, it is pretty close to the practice results. This is the same if I had taken the official SAT 15 times before. But the thing is look at the latter results. They are very much similar to what I actually got one week later. This is one of the most important aspect of a valid exam. You need your scores to reflect your ability regardless of when you take it. But to have such stability, there's some Maths to it.
-
 \section*{How to create an Adaptive Test}
 
 Writing an exam is not a straight-forward task. It involves more than just cramming as many challenging questions as possible. The point of having an exam, after all, is to evaluate and discriminate against a population of test-takers. You need a way to know who is performing well in a given criterion and later, group them for psychometric needs.
@@ -30,8 +27,6 @@ For a test to be meaningful, it must possess two qualities: Reliability and
 Validity. Reliability is consistency across time, across items, and across 
 researchers. Validity is the extent to which the scores actually represent 
 the variable they are intended to.\footnote{Price, P. C., Jhangiani, R., \& Chiang, I-Chant A. (2015). \textit{Research Methods in Psychology} (2nd Canadian ed.), Chapter 5: Reliability and Validity of Measurement. BCcampus Open Education.}
-
-In my case, my scores have steadily increased over time in both the English and Maths sections, which shows that I have improved my corresponding skills over time.
 
 \subsection*{CTT}
 
@@ -109,7 +104,7 @@ We can now use this loss function to estimate the difficulty of the questions. F
 
 Through calibrating the questions' difficulty, along with estimating individuals' abilities, we have laid the groundwork for creating an adaptive test. Now, our goal is to deliver only the questions that will yield the most information about the test-taker's ability.
 
-A question is most informative when its difficulty level is close to the test-taker's ability level. Asking a very easy question to a highly capable individual tells you very little, as does asking an impossibly hard question to a weak individual. This will ensure that only the most optimal questions are asked, reducing time, cost and increasing the accuracy of the test.
+A question is the most informative when its difficulty level is the closest to the test-taker's ability level. Asking a very easy question to a highly capable individual tells you very little, as does asking an impossibly hard question to a weak individual. This will ensure that only the most optimal questions are asked, reducing time, cost and increasing the accuracy of the test.
 
 Revisiting the 1-PL model, the predictive probability that the current test-taker answers item $j$ correctly is this:
 \[
@@ -151,6 +146,6 @@ information in adaptive testing.}
 
 \section*{Conclusion}
 
-This is just a very simple adative test implementation. Psychometricians will use more sophisticated models and algorithms to create a more accurate and reliable test. But it goes to show that the only way you can improve your score is to improve your skills and your objective ability. There's no way around it.
+This is just a very simple adaptive test implementation. Psychometricians will use more sophisticated models and algorithms to create a more accurate and reliable test. But it goes to show that the only way you can improve your score is to improve your skills and your objective ability. There's no way around it.
 
 \end{document}
